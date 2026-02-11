@@ -13,8 +13,8 @@ library(rio)
 #setwd("") # set your wd here
 
 # Import data: PopuList and Parlgov
-populist <- read_csv2("The PopuList 3.0.csv")
-elections <- read_csv("view_election.csv") # Download from https://www.parlgov.org/data-info/
+populist <- read_csv2("Data/The PopuList 3.0.csv")
+elections <- read_csv("Data/view_election.csv") # Download from https://www.parlgov.org/data-info/
 
 # join: adds populist info to the respective cases in parlov
 data <- left_join(elections, select(populist, populist:parlgov_id), by=c("party_id"="parlgov_id"))
@@ -162,7 +162,7 @@ P$country_code <- countrycode(P$country, origin = "country.name", destination = 
 
 # read dataset
 # population dataset obtained from world bank: https://data.worldbank.org/indicator/SP.POP.TOTL?locations=EU&view=map&year=2020
-populations <- readxl::read_excel("Population size.xls")
+populations <- readxl::read_excel("Data/Population size.xls")
 
 populations <- populations |> 
   slice(-c(1:2)) |> 
@@ -253,7 +253,7 @@ core_figure
 
 
 # Save
-ggsave(core_figure, file="Core Figure.jpg", dpi=2000, width=9, height=6)
+#ggsave(core_figure, file="Core Figure.jpg", dpi=2000, width=9, height=6)
 
 G_long<-G_long |> 
   mutate(party = factor(party, levels = c("far-right", "far-right populist", "populist", "far-left populist", "far-left")))
@@ -420,7 +420,7 @@ girafe_object <- girafe(core_figure, width_svg = 10, height_svg = 13,
 )
 
 
-htmltools::save_html(girafe_object, "/Users/lukefischer/Dropbox/PopuList/bar/bar.html")
+htmltools::save_html(girafe_object, 'Visualizations/bar/bar.html')
 
 ## Populism Only Time Series
 
@@ -437,6 +437,9 @@ populist_time <- G_long |>
   group_by(year) |> 
   summarize(share = sum(vote_share)) |> 
   ungroup()
+
+populist_time <- populist_time |>
+  mutate(share_label = sprintf("%.2f%%", share))
 
 library(gganimate)
 
@@ -475,7 +478,7 @@ renderer = gifski_renderer()
 
 
 anim_save(
-  "time.gif", 
+  "Visualizations/time/time.gif", 
   animation = anim
 )
 
