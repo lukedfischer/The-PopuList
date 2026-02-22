@@ -69,7 +69,14 @@ populist_votes<- populist_votes |>
 
 ## Directory Map
 
-populist_votes$links <- rep("https://lukedfischer.github.io/", 30)
+populist_votes$links <- rep("placeholder", 30)
+
+populist_votes <- populist_votes |> 
+  mutate(links = case_when(
+    country == "France" ~ "https://lukedfischer.github.io/The-PopuList/Countries/France/France.html",
+      TRUE ~ links
+  )) 
+
 
 directory_map <- populist_votes |>
   ggplot(aes(geometry = geometry, 
@@ -113,7 +120,7 @@ directory_giraph <- girafe(
     opts_sizing(rescale = TRUE)
   ))
 
-htmltools::save_html(directory_giraph, "/Users/lukefischer/Dropbox/PopuList/directory/directory.html")
+#htmltools::save_html(directory_giraph, "/Users/lukefischer/Dropbox/PopuList/directory/directory.html")
 
 
 ## Without fill
