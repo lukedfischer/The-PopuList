@@ -197,11 +197,13 @@ table <- reactable(
     highlightColor = "#f0f5f9",
     cellPadding = "8px 12px",
     style = list(
-      fontFamily = "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"
-    ),
+      fontFamily = "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif",
+      width = "1500px"
+      ),
     searchInputStyle = list(width = "100%")
   )
 )
 
 htmlwidgets::saveWidget(table, "Visualizations/table/table.html", selfcontained = TRUE)
 
+?htmlwidgets::saveWidget
