@@ -190,6 +190,7 @@ table <- reactable(
   sortable = TRUE,
   defaultExpanded = TRUE,
   searchable = TRUE,
+  defaultPageSize = 1,
   theme = reactableTheme(
     borderColor = "#dfe2e5",
     stripedColor = "#f6f8fa",
