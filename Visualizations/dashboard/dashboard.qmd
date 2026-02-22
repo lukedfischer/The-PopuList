@@ -1,3 +1,21 @@
+---
+title: "The PopuList Country-Report"
+format: 
+  dashboard:
+    logo: images/logo.PNG
+editor: visual
+theme: lux
+---
+
+```{r}
+#| include: FALSE
+
+library(tidyverse)
+library(gt)
+library(reactable)
+
+setwd("/Users/lukefischer/Dropbox/The PopuList/")
+
 populist <- read_csv2("Data/The PopuList 3.0.csv")
 
 
@@ -141,68 +159,68 @@ names <- c("Country", "Party Name", "Party Name En.", "Abbr.", "Populist", "Far-
 
 colnames(populist_cleaned) <- names
 
-populist_cleaned |> 
-  gt(groupname_col = "Country") |> 
-  tab_style(
-    style = cell_text(weight = "bold"),
-    locations = cells_column_labels()) |>
-  tab_style(
-    style = cell_fill(color = "#D3D3D3"),
-    locations = cells_column_labels()) |>
-  tab_style(
-    style = cell_borders(
-      sides = c("bottom", "top"),     
-      color = "black", 
-      weight = px(2)),               
-    locations = cells_column_labels()
-  ) |> 
-  tab_style(
-    style = cell_fill(color = "#E5E4E2"),
-    locations = cells_row_groups()) |> 
-  fmt_markdown(columns = c("Populist", "Far-Right", "Far-Left", "Euroskeptic")) |> 
-  cols_width(
-    "Populist" ~ px(140),
-    "Far-Right" ~ px(140),
-    "Far-Left" ~ px(140),
-    "Euroskeptic" ~ px(140), 
-    "In Parliament" ~ px(120)
-  )
+```
+
+# General Overview
+
+## Row {height="20%"}
+
+::: {.card title="Symbol Explanation"}
+This dashboard summarizes whether a party of country on the PopuList is populist, far-right, far-left, eurosceptic, and in parliament. The following symbols are used. Please refer to the main website for additional information.
+
+-   A ● indicates that a party fulfills a characteristic
+-   A ◐ indicates a borderline case
+-   At times, the specific time intervals for when the characteristic was fulfilled is provided in parentheses
+
+:::
 
 
-library(reactable)
+## Row {height="80%"}
 
-table <- reactable(
+```{r}
+#| echo: FALSE
+#| title: Per Country Party Information
+
+
+reactable(
   populist_cleaned,
   groupBy = "Country",
   columns = list(
-    "Populist" = colDef(html = TRUE, width = 140),
-    "Far-Right" = colDef(html = TRUE, width = 140),
-    "Far-Left" = colDef(html = TRUE, width = 140),
-    "Euroskeptic" = colDef(html = TRUE, width = 140),
-    "In Parliament" = colDef(html = TRUE, width = 140),
-    "Country" = colDef(width = 120,
+    "Populist" = 
+      colDef(html = TRUE, width = 140, headerStyle = list(backgroundColor = "#daf0ff")),
+    "Far-Right" = 
+      colDef(html = TRUE, width = 140, headerStyle = list(backgroundColor = "#daf0ff")),
+    "Far-Left" = 
+      colDef(html = TRUE, width = 140, headerStyle = list(backgroundColor = "#daf0ff")),
+    "Euroskeptic" = 
+      colDef(html = TRUE, width = 140, headerStyle = list(backgroundColor = "#daf0ff")),
+    "In Parliament" = 
+      colDef(html = TRUE, width = 150, headerStyle = list(backgroundColor = "#daf0ff")),
+    "Abbr." = 
+      colDef(html = TRUE, width = 140, headerStyle = list(backgroundColor = "#daf0ff")),
+    "Party Name" = 
+      colDef(headerStyle = list(backgroundColor = "#daf0ff")),
+    "Party Name En." = 
+      colDef(headerStyle = list(backgroundColor = "#daf0ff")),
+    "Country" = 
+      colDef(
+        headerStyle = list(backgroundColor = "#daf0ff"),
       grouped = JS("function(cellInfo) {
         return cellInfo.value
       }")
     )),
   highlight = TRUE,
   sortable = TRUE,
-  defaultExpanded = TRUE,
+  defaultExpanded = FALSE,
   searchable = TRUE,
-  defaultPageSize = 1,
   theme = reactableTheme(
     borderColor = "#dfe2e5",
     stripedColor = "#f6f8fa",
     highlightColor = "#f0f5f9",
     cellPadding = "8px 12px",
     style = list(
-      fontFamily = "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif",
-      width = "1500px"
-      ),
+      fontFamily = "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"),
     searchInputStyle = list(width = "100%")
   )
 )
-
-htmlwidgets::saveWidget(table, "Visualizations/table/table.html", selfcontained = TRUE)
-
-?htmlwidgets::saveWidget
+```
